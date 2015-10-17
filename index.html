@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="lavagnaApp">
     <head>
+        <base href="/lavagna/" />
         <title>Lavagna tecnologica per le punizioni</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-        <script type="text/javascript" src="https://code.angularjs.org/1.4.7/angular-route.min.js"></script>
+
 
         <style type="text/css">
             @font-face {
@@ -126,14 +127,18 @@
         <div id="lavagna-input"><input ng-model="frase" placeholder="Inizia a scrivere qui la tua punizione" autofocus></div>
         <div id="lavagna">
             <div id="lavagna-scritte">
-                <p ng-repeat="i in getNumber(number) track by $index" >{{$index + 1}}. {{frase}}</p>
+                <p ng-repeat="i in getNumber(number) track by $index">{{$index + 1}}. {{frase}}</p>
             </div>
         </div>
 
         <script type="text/javascript">
-                var lavagnaApp = angular.module('lavagnaApp', []);
-                lavagnaApp.controller("LavagnaCtrl", function($scope) {
-                    $scope.frase = ''; //Essere calvo non giustifica il fatto di rubare la merenda ai bambini più piccoli spacciandosi per il preside della scuola
+                angular.module('lavagnaApp', [])
+                .config(function($locationProvider) {
+                    $locationProvider.html5Mode(true);
+                })
+                .controller("LavagnaCtrl", function($scope, $location) {
+                    var paramValue = $location.search().t;
+                    $scope.frase = paramValue;
                     $scope.number = 100;
                     $scope.getNumber = function(num) {
                         return new Array(num);
